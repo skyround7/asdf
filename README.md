@@ -110,8 +110,9 @@ Subset of paymentResult
 
 ### 6.3. Install the SDK library
 	- Place the lib directory in your source directory.
-	![image](https://user-images.githubusercontent.com/72907629/96087451-d43a3a80-0efe-11eb-891d-2f7e0036f154.png)
 	- Include the AnyonePay.php file in your source code.
+![image](https://user-images.githubusercontent.com/72907629/96087451-d43a3a80-0efe-11eb-891d-2f7e0036f154.png)
+	
 
 ### 6.4 Register API example
 	RegisterStub.php
