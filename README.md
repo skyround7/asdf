@@ -7,6 +7,7 @@
 ## Summary of flow
 ![flow](https://user-images.githubusercontent.com/72907629/96084251-bcac8300-0ef9-11eb-951f-bb96589a049c.png)
 
+
 ## API Server Information
 Sandbox : https://stg.anyonepay.ph/checkout/api-sev
 Production : https://api.anyonepay.ph
@@ -17,11 +18,14 @@ Production : https://api.anyonepay.ph
 4.1. End point URI
 [POST] /registerPayment
 
+
 4.2. Request Header
 ![image](https://user-images.githubusercontent.com/72907629/96085708-262d9100-0efc-11eb-8e7f-5c7e059a1d67.png)
 
+
 4.3. Request Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96085819-59702000-0efc-11eb-9234-ede673827187.png)
+
 
 4.4. Request Body Example
 
