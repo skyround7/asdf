@@ -161,6 +161,7 @@ Subset of paymentResult
 - prepare the credential for sandbox configuration from Business site of your account.
 
 -Test
+
 ![image](https://user-images.githubusercontent.com/72907629/96394075-16fc5b00-11fc-11eb-9fb3-6e1c7f53f25a.png)
 
 ### 7.1. End point URI
