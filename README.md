@@ -156,4 +156,51 @@ Subset of paymentResult
 	//Check the result of response
 	echo 'paymentSeq : ' . $response->paymentSeq;
 
+## 7. SandBox API
+- SandBox product purchase api. 
+- prepare the credential for sandbox configuration from Business site of your account.
+
+-Test
+![image](https://user-images.githubusercontent.com/72907629/96394075-16fc5b00-11fc-11eb-9fb3-6e1c7f53f25a.png)
+
+### 7.1. End point URI
+[POST] /registerPayment
+
+### 7.2. Request Header
+![image](https://user-images.githubusercontent.com/72907629/96394169-4ca14400-11fc-11eb-831a-d76b2917db59.png)
+
+### 7.3. Request Parameters
+![image](https://user-images.githubusercontent.com/72907629/96404812-cba37600-1216-11eb-95c8-a83825b55b62.png)
+
+### 7.4. Request Body Example
+	JSON
+	
+	{
+	  "storeId": "2009230959474681499",
+	  "amount": "1.00",
+	  "product": "Test-Product",
+	  "redirectUrl": "https://example.com/sandbox/merchant_result.html",
+	  "webhookUrl": "https://example.com/webhook",
+	  "cancelUrl": "https://example.com/cancel",
+	  "referenceNo": "123456789"
+	}
+
+### 7.5. Response Parameters
+![image](https://user-images.githubusercontent.com/72907629/96394362-bde0f700-11fc-11eb-9763-176703b037b1.png)
+
+### 7.6. Response Body Example
+	JSON
+	{
+	 "result_code": 200,
+	  "result_message": "AOP_PAY_REGISTER_PAYMENT_200_SUCCESS",
+	  "data": {
+	    "paymentSeq": "2010151641324683967",
+	    "referenceNo": "123456789",
+	    "redirectUrl": "http://api-sandbox.anyonepay.ph/checkout/?entry=consent&paymentSeq=2010151641324683967&cancelUrl=https%3A%2F%2Fexample.com%2Fcancel"
+	  }
+	}
+
+
+
+
 
