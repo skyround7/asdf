@@ -4,27 +4,23 @@
 
  2) Merchant Store ID
 
-## 2.Summary of flow
-![flow](https://user-images.githubusercontent.com/72907629/96084251-bcac8300-0ef9-11eb-951f-bb96589a049c.png)
-
-
-## 3.API Server Information
+## 2.API Server Information
 Sandbox : https://stg.anyonepay.ph/checkout/api-sev
 Production : https://api.anyonepay.ph
 
-## 4.Register API
+## 3.Register API
 - Register a new payment transaction
 
-### 4.1 End point URI
+### 3.1 End point URI
 [POST] /registerPayment
 
-### 4.2 Request Header
+### 3.2 Request Header
 ![image](https://user-images.githubusercontent.com/72907629/96085708-262d9100-0efc-11eb-8e7f-5c7e059a1d67.png)
 
-### 4.3 Request Parameters
+### 3.3 Request Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96085819-59702000-0efc-11eb-9234-ede673827187.png)
 
-### 4.4. Request Body Example
+### 3.4. Http full packet
 
     JSON
     {
@@ -39,11 +35,11 @@ Production : https://api.anyonepay.ph
         "webhookUrl": "https://www.merchant-website.ph/webhook_page/"
     }
 
-### 4.5. Response Parameters
+### 3.5. Response Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96085985-8e7c7280-0efc-11eb-9c96-752daad95506.png)
 
 
-### 4.6. Response Body Example
+### 3.6. Response Body Example
 
     JSON
     {
@@ -55,32 +51,32 @@ Production : https://api.anyonepay.ph
         }
     }
 
-## 5.Verify API
+## 4.Verify API
 - Verify a result status of payment transaction
 
-### 5.1. End point URI
+### 4.1. End point URI
 [POST] /getPaymentResult
 
-### 5.2. Request Header
+### 4.2. Request Header
 ![image](https://user-images.githubusercontent.com/72907629/96086161-d13e4a80-0efc-11eb-9c99-6d6404d2c3b8.png)
 
-### 5.3 Request Parameters
+### 4.3 Request Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96087087-478f7c80-0efe-11eb-9780-3c2a5ad90ad7.png)
 
-### 5.4. Request Body Example
+### 4.4. Http full packet
 	JSON
 	{
 	  "paymentSeq": 200604192149017209
 	}
 
-### 5.5. Response Parameters
+### 4.5. Response Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96087188-70177680-0efe-11eb-9b8f-cc2168e9b4d7.png)
 
 Subset of paymentResult
 
 ![image](https://user-images.githubusercontent.com/72907629/96087242-858ca080-0efe-11eb-9d34-e637cbd9b42b.png)
 
-### 5.6. Response Body Example
+### 4.6. Response Body Example
 	JSON
 	{
 	"result_code": "200",
@@ -101,41 +97,86 @@ Subset of paymentResult
 	  "status": 1
 	}
 
-## 6.SDK for PHP
-### 6.1. Compatibility
+## 5.SDK for PHP
+### 5.1. Compatibility
 - PHP 5.6 or higher
 
-### 6.2. SDK source code structure
-![image](https://user-images.githubusercontent.com/72907629/96087393-be2c7a00-0efe-11eb-90cd-dfb8609d47c8.png)
-
-### 6.3. Install the SDK library
+### 5.3. Install the SDK library
 	- Place the lib directory in your source directory.
 	- Include the AnyonePay.php file in your source code.
 ![image](https://user-images.githubusercontent.com/72907629/96087451-d43a3a80-0efe-11eb-891d-2f7e0036f154.png)
 	
 
-### 6.4 Register API example
+### 5.4 Register API example
 	RegisterStub.php
 	<?php
-	//Include SDK library files
-	require_once __DIR__ . "/../AnyonePay.php";
-
+	require_once __DIR__ . "/../../lib/AnyonePay/autoload.php";
+	
 	use AnyonePay\AnyonePaySdk;
 	use AnyonePay\entity\RegisterReq;
-
-	//Initialize environment
+	
+	// AnyonePaySdk::getInstance()->initConfig("PRODUCTION");
 	AnyonePaySdk::getInstance()->initConfig("SANDBOX");
-	//Configure the input parameter
-	$request = new RegisterReq(2005271259396999814, 100, 'Tester', 'joseph@sharetreats.com', '639451901540', 'test_product', 'YourSideUniqueReferenceNumber', 'https://www.anyonepay.ph/sandbox/merchant_result.html', 'https://www.anyonepay.ph/sandbox/merchant_result.html',
-	'https://www.anyonepay.ph/sandbox/merchant_cancel.html');
-
-	//Try to send API transaction
+	
+	echo "-------------- [Register Payment START] ----------------------- <br/> \n";
+		
+	function buildProductItem()
+	{
+	    return array(
+	        0 =>
+	        array(
+	            'name' => 'product-name-1',
+	            'count' => 1,
+	            'currency' => 'PHP',
+	            'price' => 1.00,
+	        ),
+	        1 =>
+	        array(
+	            'name' => 'product-name-2',
+	            'count' => 4,
+	            'currency' => 'PHP',
+        	    'price' => 2.02,
+	        ),
+	    );
+	}
+	
+	
+	$request = new RegisterReq();
+	$request
+	    /* Mandatory */->setClientId('HVqAPkiIYVPTFlIL2ySesln83O7noj7s')
+	    /* Mandatory */-	>setClientSecret('N6BCpBUbGvQ3T1awvexzCyaUsYVWNsHL377TJ/BdsMGUjqGjqgx87pLNhv8NNFPi')
+	
+	    /* Mandatory */->setStoreId(2005271259396999814)
+	    /* Mandatory */->setAmount(100)
+	
+	    /* Optional  */->setUserName('Tester')
+	    /* Optional  */->setEmail('test@anyonepay.com')
+	    /* Optional  */->setPhoneNumber('639451901540')
+	
+	    /* Mandatory */->setProduct('test_product')
+	    /* Optional  */->setProductItems(buildProductItem())
+	    /* Mandatory */->setReferenceNo('REFERENCE_A000001')
+	
+	    /* Mandatory */->setRedirectUrl('https://www.yourshop.ph/payment/payment_result?	productNo=123abc')
+	    /* Mandatory */->setWebhookUrl('https://www.yourshop.ph/payment/webhook?a=b')
+	    /* Mandatory */->setCancelUrl('https://www.yourshop.ph/payment/payment_cancel?	productNo=123abc');
+	
+	echo "-------------- [Request] -------------------------------------- <br/> \n";
+	echo var_dump($request) . " <br/> \n";
 	$response = $request->send();
-
-	//Check the result of response
-	echo 'checkoutUrl : ' . $response->checkoutUrl;
-
-### 6.5. Verify API example
+	echo "-------------- [Response] ------------------------------------- <br/> \n";
+	
+	if ($response->hasError()) {
+	    echo var_dump($response->getLastError()) . " <br/> \n";
+	    return;
+	}
+	
+	$respData = $response->getResponse();
+	
+	echo var_dump($respData) . " <br/> \n";
+	echo "-------------- [END] -----------------------------------------  <br/> \n";
+	
+### 5.5. Verify API example
 	VerifyStub.php
 	<?php
 	//Include SDK library files
@@ -156,7 +197,9 @@ Subset of paymentResult
 	//Check the result of response
 	echo 'paymentSeq : ' . $response->paymentSeq;
 
-## 7. SandBox API
+## 6. SandBox API
+https://anyonepay.readme.io/reference#make-a-new-payment-1
+
 - SandBox product purchase api. 
 - prepare the credential for sandbox configuration from Business site of your account.
 
@@ -164,16 +207,16 @@ Subset of paymentResult
 
 ![image](https://user-images.githubusercontent.com/72907629/96394075-16fc5b00-11fc-11eb-9fb3-6e1c7f53f25a.png)
 
-### 7.1. End point URI
+### 6.1. End point URI
 [POST] /registerPayment
 
-### 7.2. Request Header
+### 6.2. Request Header
 ![image](https://user-images.githubusercontent.com/72907629/96394169-4ca14400-11fc-11eb-831a-d76b2917db59.png)
 
-### 7.3. Request Parameters
+### 6.3. Request Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96404812-cba37600-1216-11eb-95c8-a83825b55b62.png)
 
-### 7.4. Request Body Example
+### 6.4. Http full packet
 	JSON
 	
 	{
@@ -186,10 +229,10 @@ Subset of paymentResult
 	  "referenceNo": "123456789"
 	}
 
-### 7.5. Response Parameters
+### 6.5. Response Parameters
 ![image](https://user-images.githubusercontent.com/72907629/96394362-bde0f700-11fc-11eb-9763-176703b037b1.png)
 
-### 7.6. Response Body Example
+### 6.6. Response Body Example
 	JSON
 	{
 	 "result_code": 200,
@@ -200,8 +243,3 @@ Subset of paymentResult
 	    "redirectUrl": "http://api-sandbox.anyonepay.ph/checkout/?entry=consent&paymentSeq=2010151641324683967&cancelUrl=https%3A%2F%2Fexample.com%2Fcancel"
 	  }
 	}
-
-
-
-
-
